@@ -1,28 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 <head>
   <title>Angular Friends</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
+<body ng-controller="FriendCtrl">
   <h1>The <strong>facebook</strong> Friend Machine</h1>
 
   <div class="friends">
+
     <form class="form-inline searchForm" role="form">
       <div class="form-group">
-        <input class="form-control" placeholder="Search Anything About Your Friends">
+        <!--<input class="form-control" placeholder="Search Anything About Your Friends" ng-model="searchTerm">-->
 
-        <select class="input-medium">
-          <option>Name</option>
-          <option>#Friends</option>
-          <option>City</option>
-          <option>State</option>
-          <option>Country</option>
+        <input class="form-control" placeholder="Search Name" ng-model="myFilter.name">
+        <input class="form-control" placeholder="Search State" ng-model="myFilter.location.state">
+
+
+        <select class="input-medium" ng-model="sortProp">
+          <option value="name">Name</option>
+          <option value="friend_count">Friends</option>
+          <option value="location.city">City</option>
+          <option value="state">State</option>
+          <option value="country">Country</option>
         </select>
 
-        <select class="input-medium">
+        <select class="input-medium" ng-model="sortDirection">
           <option value="-">Descending</option>
           <option value="+">Ascending</option>
         </select>
@@ -30,24 +35,32 @@
     </form>
 
     <ul>
-      <li class='friend'>
-        <img class="profile-pic" src='http://placebear.com/50/50.jpg'>
-        <h3>Cali Fornia</h3>
+      <li class='friend' ng-repeat="friend in friends | filter:myFilter | orderBy: sortDirection + sortProp">
+        <img class="profile-pic" ng-src={{friend.pic_square}}>
+        <!--<h3>Cali Fornia</h3>-->
+        <h3>{{ friend.name }}</h3>
         <div class="location">
-          Location: New Port Beach, California, United States
+          <!--Location:New Port Beach, California, United States-->
+          {{friend.location.city}}, {{friend.location.state}}, {{friend.location.country}}
         </div>
         <div class="status">
-          Status: I hate the snow. I wish I was on the beach right now!!!
+          <!--Status: I hate the snow. I wish I was on the beach right now!!!-->
+          {{friend.status}}
         </div>
         <div class="num-friends">
-          Friends: 1,367
+          <!--Friends: 1,367-->
+          Friends: {{friend.friend_count}}
         </div>
       </li>
     </ul>
+    <!--{{test}}-->
   </div>
 
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- your scripts here -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/FriendCtrl.js"></script>
 </body>
 </html>
